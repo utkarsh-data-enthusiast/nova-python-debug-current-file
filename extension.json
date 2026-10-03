@@ -4,7 +4,11 @@
     "organization": "PatriotEver Lab",
     "description": "Smart Python and Jupyter task for Nova.",
 
-    "bugs": "https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file/issues",
+    "bugs": {
+        "url": "https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file/issues",
+        "email": "87w97aa8@idaro.io"
+    },
+
     "repository": "https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file",
 
     "version": "1.1",
