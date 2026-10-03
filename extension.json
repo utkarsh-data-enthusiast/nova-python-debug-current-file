@@ -1,0 +1,45 @@
+{
+    "identifier": "dev.patriotever.pythondebugcurrentfile",
+    "name": "Python Debug Current File",
+    "organization": "PatriotEver Lab",
+    "description": "Smart Python and Jupyter task for Nova.",
+    "version": "1.1",
+    "categories": ["tasks"],
+
+    "main": "main.js",
+
+    "entitlements": {
+        "process": true
+    },
+
+    "debugAdapters": {
+        "debugpy": {
+            "name": "Python (debugpy)"
+        }
+    },
+
+    "breakpoints": [
+        {
+            "syntax": "python"
+        }
+    ],
+
+    "taskTemplates": {
+        "python": {
+            "name": "Python",
+            "description": "Run Python, debug Python, or launch JupyterLab based on the focused file.",
+            "tasks": {
+                "build": {
+                    "resolve": "python-smart"
+                },
+                "run": {
+                    "resolve": "python-smart"
+                }
+            }
+        }
+    },
+
+    "activationEvents": [
+        "*"
+    ]
+}
