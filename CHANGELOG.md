@@ -1,15 +1,56 @@
+## Version 1.4
+
+### Portability and Compatibility
+
+- Removed the hard-coded Python 3.14 installation path.
+- Python is now resolved through the user's system environment using `python3`.
+- Jupyter is now resolved through the user's system environment using `jupyter`.
+- Python files no longer need to be inside a folder named `Python`.
+- Jupyter notebooks no longer need to be inside a folder named `Jupyter`.
+- JupyterLab now launches using the focused notebook's actual containing folder as its working directory.
+- Updated task logic to detect Python and Jupyter files by `.py` and `.ipynb` file extensions.
+
+### Python Debugging
+
+- Confirmed Python debugging works outside dedicated Python folders.
+- Continued using `debugpy` with Nova's native debugging interface.
+- Improved error messages for unsupported or unfocused files.
+
+### Documentation
+
+- Added a real screenshot demonstrating Python debugging with breakpoints, variables, debug output, and `debugpy`.
+- Expanded setup instructions for adding the Python Task Template to Nova projects.
+- Added clearer Run, Debug, Build, and Jupyter usage instructions.
+- Updated requirements to reflect environment-based Python and Jupyter detection.
+- Documented the intentional Build behavior for Jupyter notebooks.
+- Updated current-status and planned-improvements documentation.
+
 ## Version 1.3
 
-- Replaced the default Nova README template with accurate documentation for Python Debug Current File.
-- Removed misleading Node.js requirements and the unrelated Playdate screenshot.
-- Added clear usage instructions for running, debugging, and Jupyter support.
-- Added current compatibility notes and planned improvements.
+### Documentation Improvements
+
+- Replaced the default Nova README template with documentation written specifically for Python Debug Current File.
+- Removed the unrelated Playdate screenshot.
+- Removed misleading Node.js and NPM requirements.
+- Added usage instructions for Python Run, Python Debug, and Jupyter support.
+- Added compatibility notes and planned improvements.
 
 ## Version 1.2
 
-- Added GitHub issue tracking.
-- Added private support email.
+### Support and Project Links
+
+- Added the public GitHub repository.
+- Added GitHub Issues as the primary bug-reporting and feature-request channel.
+- Added a private support email address to the extension's bug-reporting metadata.
 
 ## Version 1.1
 
-Initial release
+### Initial Release
+
+- Added the smart Python Task Template.
+- Added Python file execution from Nova.
+- Added Python debugging using `debugpy`.
+- Added breakpoint support.
+- Added the dedicated Python Debug task.
+- Added JupyterLab launching support.
+- Added integration with Nova's Run and Build task actions.

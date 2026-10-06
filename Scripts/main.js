@@ -2,11 +2,9 @@ let taskAssistant = null;
 let fileTracker = null;
 let lastFocusedFile = null;
 
-const PYTHON =
-    "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14";
-
-const JUPYTER =
-    "/Library/Frameworks/Python.framework/Versions/3.14/bin/jupyter";
+const ENV = "/usr/bin/env";
+const PYTHON = "python3";
+const JUPYTER = "jupyter";
 
 
 function rememberFocusedFile() {
@@ -30,61 +28,29 @@ function getFocusedOrRememberedFile() {
     }
 
     throw new Error(
-        "Open a file inside the Python or Jupyter folder first."
-    );
-}
-
-
-function isInsideFolder(filePath, folderPath) {
-    const file = nova.path.normalize(filePath);
-    const folder = nova.path.normalize(folderPath);
-
-    return (
-        file === folder ||
-        file.startsWith(folder + "/")
+        "Open or focus a Python (.py) file or Jupyter notebook (.ipynb) first."
     );
 }
 
 
 function getMode(filePath) {
-    const root = nova.workspace.path;
-
-    if (!root) {
-        throw new Error(
-            "This Nova project is not attached to a folder."
-        );
-    }
-
-    const pythonFolder =
-        nova.path.join(root, "Python");
-
-    const jupyterFolder =
-        nova.path.join(root, "Jupyter");
-
     const extension =
         nova.path.extname(filePath).toLowerCase();
 
-
-    if (
-        isInsideFolder(filePath, jupyterFolder) ||
-        extension === ".ipynb"
-    ) {
+    if (extension === ".ipynb") {
         return "jupyter";
     }
 
-
-    if (
-        isInsideFolder(filePath, pythonFolder) &&
-        extension === ".py"
-    ) {
+    if (extension === ".py") {
         return "python";
     }
 
-
     throw new Error(
-        "Focus a .py file inside Python, or a file inside Jupyter."
+        "Focus a Python (.py) file or Jupyter notebook (.ipynb) first."
     );
 }
+
+    
 
 
 function getPythonFileForDebugging() {
@@ -106,9 +72,10 @@ function getPythonFileForDebugging() {
 
 function createPythonRunAction(filePath) {
     return new TaskProcessAction(
-        PYTHON,
+        ENV,
         {
             args: [
+                PYTHON,
                 filePath
             ],
 
@@ -119,25 +86,17 @@ function createPythonRunAction(filePath) {
 }
 
 
-function createJupyterRunAction() {
-    const root =
-        nova.workspace.path;
-
-    const jupyterFolder =
-        nova.path.join(
-            root,
-            "Jupyter"
-        );
-
+function createJupyterRunAction(filePath) {
     return new TaskProcessAction(
-        JUPYTER,
+        ENV,
         {
             args: [
+                JUPYTER,
                 "lab"
             ],
 
             cwd:
-                jupyterFolder
+                nova.path.dirname(filePath)
         }
     );
 }
@@ -153,9 +112,10 @@ function createPythonDebugAction(filePath) {
         );
 
     action.command =
-        PYTHON;
-
+        ENV;
+    
     action.args = [
+        PYTHON,
         "-m",
         "debugpy.adapter"
     ];
@@ -282,11 +242,16 @@ class PythonSmartTaskAssistant {
 
 
             if (
-                mode === "jupyter"
-            ) {
-                return createJupyterRunAction();
+                    mode === "jupyter"
+                ) {
+                    return createJupyterRunAction(
+                        filePath
+                    );
+                }
             }
-        }
+            
+            
+            // 🔨 BUILD
 
 
         // 🔨 BUILD
