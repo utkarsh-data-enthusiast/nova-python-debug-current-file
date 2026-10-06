@@ -11,7 +11,7 @@
 
     "repository": "https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file",
 
-    "version": "1.4",
+    "version": "1.5",
     "categories": ["tasks"],
 
     "main": "main.js",

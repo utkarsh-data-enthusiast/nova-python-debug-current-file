@@ -8,7 +8,7 @@ It also provides JupyterLab launching support for Jupyter Notebook (`.ipynb`) fi
 
 The extension can run and debug the currently focused Python file using Nova's native debugging interface and `debugpy`.
 
-![Python Debug Current File debugging demo](docs/python-debug-demo.png)
+![Python Debug Current File debugging demo](https://raw.githubusercontent.com/utkarsh-data-enthusiast/nova-python-debug-current-file/main/python-debug-demo.png)
 
 ## Features
 

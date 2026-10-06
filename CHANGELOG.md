@@ -1,3 +1,11 @@
+## Version 1.5
+
+### Documentation
+
+- Moved the Python debugging demonstration image to the extension root for a cleaner project structure.
+- Removed the now-unneeded documentation folder.
+- Fixed the debugging demonstration image URL used in the Nova Extension Library Details page.
+
 ## Version 1.4
 
 ### Portability and Compatibility
