@@ -10,7 +10,7 @@
 
     "license": "MIT License",
 
-    "version": "1.6",
+    "version": "1.7",
     "categories": ["tasks"],
 
     "main": "main.js",

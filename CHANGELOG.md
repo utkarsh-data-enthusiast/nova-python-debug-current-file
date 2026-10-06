@@ -1,3 +1,12 @@
+## Version 1.7
+
+### Metadata Fixes
+
+- Corrected the Nova extension manifest format.
+- Updated the bug-reporting metadata to use the supported Bug Reports URL format.
+- Fixed extension submission validation issues.
+- Retained the MIT License and Help documentation introduced in version 1.6.
+
 ## Version 1.6
 
 ### Professional Presentation
