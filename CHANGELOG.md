@@ -1,3 +1,14 @@
+## Version 1.6
+
+### Professional Presentation
+
+- Added MIT License metadata and a complete MIT `LICENSE` file.
+- Added dedicated Nova Help documentation with setup and troubleshooting guidance.
+- Added a professional feature-status table and status legend.
+- Expanded README documentation for permissions, troubleshooting, contributing, and supported workflows.
+- Added polished Nova Extension, release, and license badges.
+- Improved Extension Library presentation and documentation consistency.
+
 ## Version 1.5
 
 ### Documentation

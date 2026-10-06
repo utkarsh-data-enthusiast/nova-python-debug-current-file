@@ -1,25 +1,50 @@
 # Python Debug Current File
 
-Python Debug Current File is a Nova task extension for running and debugging Python files directly from Nova.
+Python Debug Current File is a Nova task extension for running and debugging Python files directly from Nova, with JupyterLab launching support for `.ipynb` notebooks.
 
-It also provides JupyterLab launching support for Jupyter Notebook (`.ipynb`) files.
+[![Nova Extension](https://img.shields.io/badge/Nova-Extension-7B61FF)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
+[![Release](https://img.shields.io/badge/release-v1.5-blue)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
+[![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## Debugging in Action
 
-The extension can run and debug the currently focused Python file using Nova's native debugging interface and `debugpy`.
+Debug the currently focused Python file using Nova's native debugging interface and `debugpy`.
 
 ![Python Debug Current File debugging demo](https://raw.githubusercontent.com/utkarsh-data-enthusiast/nova-python-debug-current-file/main/python-debug-demo.png)
 
 ## Features
 
-- Run the currently focused Python `.py` file
-- Debug Python files with breakpoint support
-- Debug using Nova's native debugging interface and `debugpy`
-- Launch JupyterLab for `.ipynb` notebook files
-- Work with Python and Jupyter files located anywhere in the Nova project
-- Resolve `python3` and `jupyter` through the user's system environment
-- Integrate with Nova's Run and Build task actions
-- Provide a dedicated **Python Debug** task for direct debugging
+- **Run Current Python File:** Execute the currently focused `.py` file directly from Nova.
+- **Native Python Debugging:** Debug Python files through Nova's native debugger using `debugpy`.
+- **Breakpoint Support:** Add and use breakpoints directly from Nova's editor gutter.
+- **Dedicated Python Debug Task:** Start debugging through **Python Debug → Run ▶**.
+- **Build-to-Debug Workflow:** Use **Python → Build 🔨** to launch the debugger for `.py` files.
+- **JupyterLab Support:** Launch JupyterLab for the currently focused `.ipynb` notebook.
+- **Flexible Project Layout:** Python and Jupyter files can be located anywhere in the Nova project.
+- **Environment-Based Resolution:** Resolve `python3` and `jupyter` through the user's system environment instead of relying on fixed installation paths.
+- **Focused File Detection:** Task behavior automatically adapts to `.py` and `.ipynb` files.
+
+## Feature Status
+
+| Feature | Status | Usage |
+| --- | --- | --- |
+| Python file execution | ✅ Supported | **Python → Run ▶** |
+| Python debugging | ✅ Supported | **Python Debug → Run ▶** |
+| Python debugging through Build | ✅ Supported | **Python → Build 🔨** |
+| Breakpoints | ✅ Supported | Nova editor gutter |
+| `debugpy` integration | ✅ Supported | Nova native debugger |
+| JupyterLab launching | ✅ Supported | **Python → Run ▶** on `.ipynb` |
+| Python files outside `Python` folder | ✅ Supported | Automatic |
+| Notebooks outside `Jupyter` folder | ✅ Supported | Automatic |
+| Environment-based `python3` resolution | ✅ Supported | `/usr/bin/env` |
+| Environment-based `jupyter` resolution | ✅ Supported | `/usr/bin/env` |
+| Advanced interpreter selection | 🔧 Planned | Future update |
+| Virtual-environment selector | 🔧 Planned | Future update |
+
+### Status Legend
+
+- ✅ **Supported** — available in the current release.
+- 🔧 **Planned** — intended for a future release.
 
 ## Requirements
 
@@ -33,7 +58,7 @@ The extension resolves Python and Jupyter through your system environment, so it
 
 ### Verify your setup
 
-You can verify the required commands in Terminal:
+Run:
 
 ```bash
 python3 --version
@@ -49,10 +74,10 @@ Python may be installed using the official Python installer, Homebrew, pyenv, Co
 
 The **Python** task is provided as a Nova Task Template.
 
-For a project where you want to use it:
+For each project where you want to use it:
 
 1. Open **Project → Project Settings**
-2. Go to **Tasks**
+2. Select **Tasks**
 3. Click the **+** button
 4. Add the **Python** task provided by this extension
 
@@ -64,7 +89,7 @@ The **Python Debug** task is provided dynamically by the extension and can be us
 
 1. Open or focus any `.py` file in Nova.
 2. Select the **Python** task.
-3. Click the **Run ▶** button.
+3. Click **Run ▶**.
 
 The extension runs the currently focused Python file using `python3`.
 
@@ -72,7 +97,7 @@ The file does not need to be inside a folder named `Python`.
 
 ### Debug a Python file
 
-You can debug a Python file in either of these ways.
+There are two supported debugging workflows.
 
 #### Python Debug task
 
@@ -89,7 +114,7 @@ You can also:
 
 1. Open or focus a `.py` file.
 2. Select the **Python** task.
-3. Click the **Build 🔨** button.
+3. Click **Build 🔨**.
 
 For Python files, the Build action starts the debugger.
 
@@ -113,17 +138,31 @@ If Build is used while an `.ipynb` file is focused, the extension displays a mes
 
 This behavior is intentional.
 
+## Permissions
+
+Python Debug Current File requests only the Nova entitlement required for its current functionality.
+
+### Launch Subprocesses
+
+The extension uses Nova's **Launch Subprocesses** permission to start:
+
+- `python3` for Python execution
+- `python3 -m debugpy.adapter` for debugging
+- `jupyter lab` for notebook workflows
+
+The extension does not currently request general filesystem, clipboard, or network entitlements.
+
 ## Current Status
 
-Python Debug Current File now resolves `python3` and `jupyter` through the user's system environment instead of relying on a fixed Python installation path.
+Python Debug Current File resolves `python3` and `jupyter` through the user's system environment instead of relying on a fixed Python installation path.
 
-Python `.py` files and Jupyter `.ipynb` notebooks can be used from any folder in the Nova project. Folders do not need to be named `Python` or `Jupyter`.
+Python `.py` files and Jupyter `.ipynb` notebooks can be used from any folder in the Nova project.
 
-The current version has been tested successfully for:
+The current release has been tested successfully for:
 
 - Running Python files
 - Debugging Python files with breakpoints
-- Debugging with `debugpy`
+- Debugging using `debugpy`
 - Launching JupyterLab from `.ipynb` files
 - Running Python files outside a dedicated `Python` folder
 - Debugging Python files outside a dedicated `Python` folder
@@ -131,20 +170,56 @@ The current version has been tested successfully for:
 
 ## Planned Improvements
 
-- Better virtual-environment and interpreter selection
+- Better virtual-environment support
+- Advanced Python interpreter selection
 - Additional compatibility testing across Python installation methods
 - Further task workflow refinements
 - Further Jupyter workflow refinements
 
-## Issues and Feedback
+## Troubleshooting
 
-Bug reports and feature requests can be submitted through the GitHub Issues page linked from this extension's repository.
+A dedicated **Help** page is included with the extension.
 
-A private support email is also included in the extension's bug-reporting metadata.
+Open the extension in Nova's Extension Library and select the **Help** tab for:
 
-## Source Code
+- setup instructions
+- disabled Run button troubleshooting
+- missing `python3`
+- missing `debugpy`
+- missing Jupyter
+- breakpoint troubleshooting
+- task setup guidance
+- development-extension troubleshooting
 
-The source code for Python Debug Current File is available through the **Repository** link in Nova's Extension Library listing.
+## Contributing
+
+Bug reports, compatibility reports, and feature suggestions are welcome.
+
+If you encounter a problem, please include:
+
+- your macOS version
+- your Nova version
+- your Python installation method
+- output from `python3 --version`
+- output from `python3 -m debugpy --version`
+- output from `jupyter --version`
+- the relevant Nova Extension Console error, if available
+
+Use the extension's **Bug Reports** link or GitHub Issues:
+
+https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file/issues
+
+## Repository
+
+Source code:
+
+https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file
+
+## License
+
+Python Debug Current File is released under the **MIT License**.
+
+See the included `LICENSE` file for details.
 
 ## Author
 

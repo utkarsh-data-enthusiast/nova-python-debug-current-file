@@ -10,8 +10,10 @@
     },
 
     "repository": "https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file",
+    d
+    "license": "MIT License",
 
-    "version": "1.5",
+    "version": "1.6",
     "categories": ["tasks"],
 
     "main": "main.js",
