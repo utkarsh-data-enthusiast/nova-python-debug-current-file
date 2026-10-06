@@ -3,7 +3,7 @@
 Python Debug Current File is a Nova task extension for running and debugging Python files directly from Nova, with JupyterLab launching support for `.ipynb` notebooks.
 
 [![Nova Extension](https://img.shields.io/badge/Nova-Extension-7B61FF)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
-[![Release](https://img.shields.io/badge/release-v1.7-blue)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
+[![Release](https://img.shields.io/badge/release-v1.8-blue)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## Debugging in Action

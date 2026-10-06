@@ -1,4 +1,4 @@
-## Version 1.7
+## Version 1.8
 
 ### Metadata and Documentation
 
@@ -7,6 +7,8 @@
 - Added comprehensive contributor documentation describing the extension architecture, testing, and release workflow.
 - Updated the README release badge for version 1.7.
 - Retained the MIT License, Help documentation, Python debugging, and Jupyter support.
+
+## Version 1.7
 
 ### Metadata Fixes
 
