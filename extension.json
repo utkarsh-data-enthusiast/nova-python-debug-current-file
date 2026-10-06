@@ -11,6 +11,7 @@
     "license": "MIT License",
 
     "version": "1.7",
+    "min_runtime": "9.0",
     "categories": ["tasks"],
 
     "main": "main.js",

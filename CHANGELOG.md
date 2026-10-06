@@ -1,5 +1,13 @@
 ## Version 1.7
 
+### Metadata and Documentation
+
+- Corrected and validated the Nova extension manifest.
+- Added a minimum Nova runtime requirement of version 9.0.
+- Added comprehensive contributor documentation describing the extension architecture, testing, and release workflow.
+- Updated the README release badge for version 1.7.
+- Retained the MIT License, Help documentation, Python debugging, and Jupyter support.
+
 ### Metadata Fixes
 
 - Corrected the Nova extension manifest format.
