@@ -1,4 +1,4 @@
-# Python Debug Current File — Help
+# Python Run and Debug — Help
 
 Use this page for setup, usage, and troubleshooting.
 
@@ -224,7 +224,7 @@ The extension detects supported files by their extensions:
 
 For development or extension-level errors, open Nova's **Extension Console** and look for messages from:
 
-**Python Debug Current File**
+**Python Run and Debug**
 
 The Extension Console can help diagnose:
 
@@ -258,7 +258,7 @@ The Extension Console can help diagnose:
 
 ### Launch Subprocesses
 
-Python Debug Current File requires Nova's **Launch Subprocesses** permission.
+Python Run and Debug requires Nova's **Launch Subprocesses** permission.
 
 This permission is used to launch:
 
@@ -290,7 +290,7 @@ https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file
 
 ## License
 
-Python Debug Current File is released under the **MIT License**.
+Python Run and Debug is released under the **MIT License**.
 
 See the `LICENSE` file included with the extension.
 

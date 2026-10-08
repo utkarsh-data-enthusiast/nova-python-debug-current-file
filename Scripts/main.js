@@ -2,336 +2,505 @@ let taskAssistant = null;
 let fileTracker = null;
 let lastFocusedFile = null;
 
-const ENV = "/usr/bin/env";
-const PYTHON = "python3";
-const JUPYTER = "jupyter";
+const PYTHON =
+	"/Library/Frameworks/Python.framework/Versions/3.14/bin/python3.14";
+
+const JUPYTER =
+	"/Library/Frameworks/Python.framework/Versions/3.14/bin/jupyter";
 
 
 function rememberFocusedFile() {
-    const editor = nova.workspace.activeTextEditor;
+	const editor = nova.workspace.activeTextEditor;
 
-    if (
-        editor &&
-        editor.document &&
-        editor.document.path
-    ) {
-        lastFocusedFile = editor.document.path;
-    }
+	if (
+		editor &&
+		editor.document &&
+		editor.document.path
+	) {
+		lastFocusedFile = editor.document.path;
+		return lastFocusedFile;
+	}
+
+	return null;
 }
 
 
 function getFocusedOrRememberedFile() {
-    rememberFocusedFile();
+	const focusedFile = rememberFocusedFile();
 
-    if (lastFocusedFile) {
-        return lastFocusedFile;
-    }
+	if (focusedFile) {
+		return focusedFile;
+	}
 
-    throw new Error(
-        "Open or focus a Python (.py) file or Jupyter notebook (.ipynb) first."
-    );
+	if (lastFocusedFile) {
+		return lastFocusedFile;
+	}
+
+	throw new Error(
+		"Open and focus a file inside Python or Jupyter first."
+	);
+}
+
+
+function isInsideFolder(filePath, folderPath) {
+	const file =
+		nova.path.normalize(filePath);
+
+	const folder =
+		nova.path.normalize(folderPath);
+
+	return (
+		file === folder ||
+		file.startsWith(folder + "/")
+	);
+}
+
+
+function getProjectFolders() {
+	const root = nova.workspace.path;
+
+	if (!root) {
+		throw new Error(
+			"This Nova project is not attached to a folder."
+		);
+	}
+
+	return {
+		root: root,
+
+		pythonFolder:
+			nova.path.join(
+				root,
+				"Python"
+			),
+
+		jupyterFolder:
+			nova.path.join(
+				root,
+				"Jupyter"
+			)
+	};
 }
 
 
 function getMode(filePath) {
-    const extension =
-        nova.path.extname(filePath).toLowerCase();
+	const folders =
+		getProjectFolders();
 
-    if (extension === ".ipynb") {
-        return "jupyter";
-    }
+	const extension =
+		nova.path
+			.extname(filePath)
+			.toLowerCase();
 
-    if (extension === ".py") {
-        return "python";
-    }
 
-    throw new Error(
-        "Focus a Python (.py) file or Jupyter notebook (.ipynb) first."
-    );
+	/*
+	 * .ipynb anywhere = Jupyter
+	 */
+
+	if (extension === ".ipynb") {
+		return "jupyter";
+	}
+
+
+	/*
+	 * .py inside Python/ OR Jupyter/ = Python
+	 */
+
+	if (
+		extension === ".py" &&
+		(
+			isInsideFolder(
+				filePath,
+				folders.pythonFolder
+			) ||
+			isInsideFolder(
+				filePath,
+				folders.jupyterFolder
+			)
+		)
+	) {
+		return "python";
+	}
+
+
+	/*
+	 * Any other file inside Jupyter/ = Jupyter
+	 */
+
+	if (
+		isInsideFolder(
+			filePath,
+			folders.jupyterFolder
+		)
+	) {
+		return "jupyter";
+	}
+
+
+	throw new Error(
+		"Focus a .py file inside Python or Jupyter, an .ipynb notebook, or another file inside the Jupyter folder."
+	);
 }
-
-    
 
 
 function getPythonFileForDebugging() {
-    const filePath =
-        getFocusedOrRememberedFile();
+	const filePath =
+		getFocusedOrRememberedFile();
 
-    if (
-        nova.path.extname(filePath).toLowerCase()
-        !== ".py"
-    ) {
-        throw new Error(
-            "Open or focus a Python (.py) file before debugging."
-        );
-    }
+	const folders =
+		getProjectFolders();
 
-    return filePath;
+	const extension =
+		nova.path
+			.extname(filePath)
+			.toLowerCase();
+
+
+	if (
+		extension !== ".py" ||
+		!(
+			isInsideFolder(
+				filePath,
+				folders.pythonFolder
+			) ||
+			isInsideFolder(
+				filePath,
+				folders.jupyterFolder
+			)
+		)
+	) {
+		throw new Error(
+			"Open and focus a Python (.py) file inside the Python or Jupyter folder before debugging."
+		);
+	}
+
+
+	return filePath;
 }
 
 
 function createPythonRunAction(filePath) {
-    return new TaskProcessAction(
-        ENV,
-        {
-            args: [
-                PYTHON,
-                filePath
-            ],
+	return new TaskProcessAction(
+		PYTHON,
+		{
+			args: [
+				filePath
+			],
 
-            cwd:
-                nova.path.dirname(filePath)
-        }
-    );
+			cwd:
+				nova.path.dirname(
+					filePath
+				)
+		}
+	);
 }
 
 
 function createJupyterRunAction(filePath) {
-    return new TaskProcessAction(
-        ENV,
-        {
-            args: [
-                JUPYTER,
-                "lab"
-            ],
+	const folders =
+		getProjectFolders();
 
-            cwd:
-                nova.path.dirname(filePath)
-        }
-    );
+	const extension =
+		nova.path
+			.extname(filePath)
+			.toLowerCase();
+
+
+	/*
+	 * Focused notebook:
+	 * launch JupyterLab and open it directly.
+	 */
+
+	if (extension === ".ipynb") {
+		return new TaskProcessAction(
+			JUPYTER,
+			{
+				args: [
+					"lab",
+					filePath
+				],
+
+				cwd:
+					nova.path.dirname(
+						filePath
+					)
+			}
+		);
+	}
+
+
+	/*
+	 * Other file inside Jupyter/:
+	 * launch JupyterLab in Jupyter folder.
+	 */
+
+	return new TaskProcessAction(
+		JUPYTER,
+		{
+			args: [
+				"lab"
+			],
+
+			cwd:
+				folders.jupyterFolder
+		}
+	);
 }
 
 
 function createPythonDebugAction(filePath) {
-    const workingDirectory =
-        nova.path.dirname(filePath);
+	const workingDirectory =
+		nova.path.dirname(
+			filePath
+		);
 
-    const action =
-        new TaskDebugAdapterAction(
-            "debugpy"
-        );
 
-    action.command =
-        ENV;
-    
-    action.args = [
-        PYTHON,
-        "-m",
-        "debugpy.adapter"
-    ];
+	const action =
+		new TaskDebugAdapterAction(
+			"debugpy"
+		);
 
-    action.adapterStart =
-        "launch";
 
-    action.transport =
-        "stdio";
+	action.command =
+		PYTHON;
 
-    action.debugRequest =
-        "launch";
 
-    action.cwd =
-        workingDirectory;
+	action.args = [
+		"-m",
+		"debugpy.adapter"
+	];
 
-    action.debugArgs = {
-        program:
-            filePath,
 
-        python: [
-            PYTHON
-        ],
+	action.adapterStart =
+		"launch";
 
-        cwd:
-            workingDirectory,
 
-        console:
-            "internalConsole",
+	action.transport =
+		"stdio";
 
-        justMyCode:
-            true,
 
-        redirectOutput:
-            true,
+	action.debugRequest =
+		"launch";
 
-        stopOnEntry:
-            false
-    };
 
-    return action;
+	action.cwd =
+		workingDirectory;
+
+
+	action.debugArgs = {
+		program:
+			filePath,
+
+		python: [
+			PYTHON
+		],
+
+		cwd:
+			workingDirectory,
+
+		console:
+			"internalConsole",
+
+		justMyCode:
+			true,
+
+		redirectOutput:
+			true,
+
+		stopOnEntry:
+			false
+	};
+
+
+	return action;
 }
 
 
 class PythonSmartTaskAssistant {
 
-    provideTasks() {
+	provideTasks() {
 
-        // SECOND TASK:
-        // Real Debug Task launched through ▶ Run.
-        const debugTask =
-            new Task(
-                "Python Debug"
-            );
+		/*
+		 * Clean debugger:
+		 * Python Debug + ▶
+		 */
 
-        debugTask.setAction(
-            Task.Run,
-            new TaskResolvableAction({
-                data: {
-                    type:
-                        "python-debug"
-                }
-            })
-        );
-
-        return [
-            debugTask
-        ];
-    }
+		const debugTask =
+			new Task(
+				"Python Debug"
+			);
 
 
-    resolveTaskAction(context) {
+		debugTask.setAction(
+			Task.Run,
 
-        /*
-         * ------------------------------------------------
-         * PYTHON DEBUG TASK
-         * ------------------------------------------------
-         *
-         * Python Debug → ▶ Run
-         *
-         * This bypasses Build completely.
-         */
-
-        if (
-            context.data &&
-            context.data.type ===
-                "python-debug"
-        ) {
-            const filePath =
-                getPythonFileForDebugging();
-
-            return createPythonDebugAction(
-                filePath
-            );
-        }
+			new TaskResolvableAction({
+				data: {
+					type:
+						"python-debug"
+				}
+			})
+		);
 
 
-        /*
-         * ------------------------------------------------
-         * EXISTING SMART PYTHON TASK
-         * ------------------------------------------------
-         */
-
-        const filePath =
-            getFocusedOrRememberedFile();
-
-        const mode =
-            getMode(filePath);
+		return [
+			debugTask
+		];
+	}
 
 
-        // ▶ RUN
-        if (
-            context.action ===
-            Task.Run
-        ) {
+	resolveTaskAction(context) {
 
-            if (
-                mode === "python"
-            ) {
-                return createPythonRunAction(
-                    filePath
-                );
-            }
+		/*
+		 * Python Debug task
+		 */
 
+		if (
+			context.data &&
+			context.data.type ===
+				"python-debug"
+		) {
 
-            if (
-                    mode === "jupyter"
-                ) {
-                    return createJupyterRunAction(
-                        filePath
-                    );
-                }
-            }
-            
-            
-            // 🔨 BUILD
+			const filePath =
+				getPythonFileForDebugging();
 
 
-        // 🔨 BUILD
-        if (
-            context.action ===
-            Task.Build
-        ) {
-
-            if (
-                mode === "python"
-            ) {
-                return createPythonDebugAction(
-                    filePath
-                );
-            }
+			return createPythonDebugAction(
+				filePath
+			);
+		}
 
 
-            if (
-                mode === "jupyter"
-            ) {
-                throw new Error(
-                    "The hammer is for debugging Python .py files. Use ▶ Run to start JupyterLab."
-                );
-            }
-        }
+		/*
+		 * Smart Python task
+		 */
+
+		const filePath =
+			getFocusedOrRememberedFile();
 
 
-        return null;
-    }
+		const mode =
+			getMode(
+				filePath
+			);
+
+
+		/*
+		 * ▶ RUN
+		 */
+
+		if (
+			context.action ===
+			Task.Run
+		) {
+
+			if (
+				mode === "python"
+			) {
+				return createPythonRunAction(
+					filePath
+				);
+			}
+
+
+			if (
+				mode === "jupyter"
+			) {
+				return createJupyterRunAction(
+					filePath
+				);
+			}
+		}
+
+
+		/*
+		 * 🔨 BUILD / HAMMER
+		 */
+
+		if (
+			context.action ===
+			Task.Build
+		) {
+
+			if (
+				mode === "python"
+			) {
+				return createPythonDebugAction(
+					filePath
+				);
+			}
+
+
+			if (
+				mode === "jupyter"
+			) {
+				return createJupyterRunAction(
+					filePath
+				);
+			}
+		}
+
+
+		return null;
+	}
 }
 
 
 exports.activate =
 function() {
 
-    rememberFocusedFile();
-
-    fileTracker =
-        setInterval(
-            rememberFocusedFile,
-            200
-        );
+	rememberFocusedFile();
 
 
-    taskAssistant =
-        nova.assistants
-            .registerTaskAssistant(
-                new PythonSmartTaskAssistant(),
-                {
-                    identifier:
-                        "python-smart",
+	fileTracker =
+		setInterval(
+			rememberFocusedFile,
+			200
+		);
 
-                    name:
-                        "Python"
-                }
-            );
+
+	taskAssistant =
+		nova.assistants
+			.registerTaskAssistant(
+
+				new PythonSmartTaskAssistant(),
+
+				{
+					identifier:
+						"python-smart",
+
+					name:
+						"Python"
+				}
+			);
 };
 
 
 exports.deactivate =
 function() {
 
-    if (
-        fileTracker !== null
-    ) {
-        clearInterval(
-            fileTracker
-        );
+	if (
+		fileTracker !== null
+	) {
 
-        fileTracker =
-            null;
-    }
+		clearInterval(
+			fileTracker
+		);
 
 
-    if (
-        taskAssistant
-    ) {
-        taskAssistant.dispose();
+		fileTracker =
+			null;
+	}
 
-        taskAssistant =
-            null;
-    }
+
+	if (
+		taskAssistant
+	) {
+
+		taskAssistant.dispose();
+
+
+		taskAssistant =
+			null;
+	}
 };

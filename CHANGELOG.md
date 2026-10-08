@@ -1,3 +1,43 @@
+## 2.0
+
+### Added
+- Added smart Python and Jupyter task routing based on the focused file.
+- Added JupyterLab support for `.ipynb` notebooks anywhere in the project.
+- Added automatic Jupyter mode for non-Python files inside the `Jupyter` folder.
+- Added Python execution for `.py` files inside both the `Python` and `Jupyter` folders.
+- Added Python debugging for `.py` files inside both the `Python` and `Jupyter` folders.
+- Added JupyterLab launch support from both Run and Build/Hammer while in Jupyter mode.
+- Added direct opening of the focused `.ipynb` notebook in JupyterLab.
+- Added the separate `Python Debug` task for clean debugging through Nova's Run action.
+
+### Changed
+- Standardized Python execution and debugging on Python 3.14.
+- Jupyter mode now gives `.ipynb` files priority regardless of their folder.
+- `.py` files inside the `Jupyter` folder now behave as normal Python files.
+- The smart task remains named `Python`.
+
+### Fixed
+- Fixed `env: jupyter: No such file or directory`.
+- Fixed JupyterLab failing to launch from the smart Python task.
+- Fixed non-notebook files inside `Jupyter/` not activating Jupyter mode.
+- Improved remembered-file handling when Nova task reports temporarily take editor focus.
+
+### Behavior
+- `Python/*.py`: Run executes Python; Hammer debugs Python.
+- `Python/*.ipynb`: Run or Hammer launches JupyterLab.
+- `Jupyter/*.py`: Run executes Python; Hammer debugs Python.
+- `Jupyter/*.ipynb`: Run or Hammer launches JupyterLab.
+- Other files inside `Jupyter/`: Run or Hammer launches JupyterLab.
+
+## Version 1.9
+
+### Extension Naming and User Experience
+
+- Renamed the extension from **Python Debug Current File** to **Python Run and Debug** to better reflect its functionality.
+- Updated the extension description to highlight Python Run, Python Debug, and JupyterLab support.
+- Updated current user and contributor documentation to use the new extension name.
+- Kept the extension identifier unchanged to preserve update compatibility.
+
 ## Version 1.8
 
 ### Metadata and Documentation

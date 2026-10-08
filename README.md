@@ -1,6 +1,6 @@
-# Python Debug Current File
+# Python Run and Debug
 
-Python Debug Current File is a Nova task extension for running and debugging Python files directly from Nova, with JupyterLab launching support for `.ipynb` notebooks.
+Python Run and Debug is a Nova task extension for running and debugging Python files directly from Nova, with JupyterLab launching support for `.ipynb` notebooks.
 
 [![Nova Extension](https://img.shields.io/badge/Nova-Extension-7B61FF)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
 [![Release](https://img.shields.io/badge/release-v1.8-blue)](https://extensions.panic.com/extensions/dev.patriotever/dev.patriotever.pythondebugcurrentfile/)
@@ -10,7 +10,7 @@ Python Debug Current File is a Nova task extension for running and debugging Pyt
 
 Debug the currently focused Python file using Nova's native debugging interface and `debugpy`.
 
-![Python Debug Current File debugging demo](https://raw.githubusercontent.com/utkarsh-data-enthusiast/nova-python-debug-current-file/main/python-debug-demo.png)
+![Python Run and Debug debugging demo](https://raw.githubusercontent.com/utkarsh-data-enthusiast/nova-python-debug-current-file/main/python-debug-demo.png)
 
 ## Features
 
@@ -140,7 +140,7 @@ This behavior is intentional.
 
 ## Permissions
 
-Python Debug Current File requests only the Nova entitlement required for its current functionality.
+Python Run and Debug requests only the Nova entitlement required for its current functionality.
 
 ### Launch Subprocesses
 
@@ -154,7 +154,7 @@ The extension does not currently request general filesystem, clipboard, or netwo
 
 ## Current Status
 
-Python Debug Current File resolves `python3` and `jupyter` through the user's system environment instead of relying on a fixed Python installation path.
+Python Run and Debug resolves `python3` and `jupyter` through the user's system environment instead of relying on a fixed Python installation path.
 
 Python `.py` files and Jupyter `.ipynb` notebooks can be used from any folder in the Nova project.
 
@@ -217,7 +217,7 @@ https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file
 
 ## License
 
-Python Debug Current File is released under the **MIT License**.
+Python Run and Debug is released under the **MIT License**.
 
 See the included `LICENSE` file for details.
 

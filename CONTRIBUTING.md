@@ -1,6 +1,6 @@
-# Contributing to Python Debug Current File
+# Contributing to Python Run and Debug
 
-Thank you for your interest in improving **Python Debug Current File**.
+Thank you for your interest in improving **Python Run and Debug**.
 
 This document explains how the extension is structured, how its Python, debugging, and Jupyter workflows operate, how to test changes locally in Nova, and how releases should be prepared.
 
@@ -10,7 +10,7 @@ The project is maintained by **PatriotEver Lab**.
 
 ## Project Overview
 
-Python Debug Current File is a Nova task extension designed to provide a simple workflow for:
+Python Run and Debug is a Nova task extension designed to provide a simple workflow for:
 
 - Running the currently focused Python `.py` file
 - Debugging Python files using `debugpy`
@@ -28,7 +28,7 @@ The extension intentionally avoids depending on a fixed Python installation path
 The extension currently uses the following structure:
 
 ```text
-Python Debug Current File.novaextension/
+Python Run and Debug.novaextension/
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── HELP.md
@@ -563,7 +563,7 @@ Extension Console
 Look for errors associated with:
 
 ```text
-Python Debug Current File
+Python Run and Debug
 ```
 
 Useful areas to investigate include:
@@ -831,7 +831,7 @@ https://github.com/utkarsh-data-enthusiast/nova-python-debug-current-file
 
 ## License
 
-Python Debug Current File is released under the **MIT License**.
+Python Run and Debug is released under the **MIT License**.
 
 By contributing to this project, you agree that your contributions may be distributed under the same license.
 
